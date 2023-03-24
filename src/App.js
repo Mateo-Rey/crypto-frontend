@@ -46,7 +46,7 @@ function App() {
           <div className="SwapWidget absolute top-0 z-50">
             {widgetShow && (
               <>
-                <div className="ease-in-out h-full drop-shadow-2xl">
+                <div className="transition ease-in-out h-full drop-shadow-2xl">
                   <SwapWidget
                     brandedFooter={false}
                     jsonRpcUrlMap={JSONRPCMAP}
@@ -69,18 +69,19 @@ function App() {
           </div>
         </div>
         <div className="md:w-[80%] h-full overflow-hidden bg-gradient-to-br from-soft-light-blue to-gradient-blue md:absolute left-[20%] shadow-shadow-blue shadow-lg">
-          <div className="overflow-scroll h-[90%]">
+          <div className="overflow-scroll flex flex-col place-items-center h-[90%]">
             {messageList.map((message) => {
               if (message.name === "ai") {
                 return (
                   <>
-                    <div className="flex flex-col items-center">
+                    <div className="absolute bg-slate-300 bg-opacity-80 ease-in-out shadow-lg rounded-lg">
+                      <div className="flex flex-col items-center">
                       <div className="flex items-center space-x-3">
                         <img className="rounded-full" src={cryptoavatar} />
                         <div>{message.name}</div>
                       </div>
-
-                      <div className="bg-white bg-opacity-50">{message.message}</div>
+                      <div className="">{message.message}</div>
+                      </div>
                     </div>
                   </>
                 );
