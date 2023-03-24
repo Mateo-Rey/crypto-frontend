@@ -24,7 +24,7 @@ module.exports = {
         "shadow-blue": "#8091d7",
         "light-shadow-blue": "#adc5ff",
         "sidebar-secondary": "#bbc8ff",
-        "sidebar-primary": "#8b94d9",
+        "sidebar-primary": "#BEE7E8",
         "sidebar-shadow": "#858a99",
         "page-bgcolor": "#faffff",
         "page-accent": "#d3e0e2",
