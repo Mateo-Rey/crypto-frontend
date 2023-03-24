@@ -1,4 +1,8 @@
+@import "tailwindcss/base";
 
+@import "tailwindcss/components";
+
+@import "tailwindcss/utilities";
 .App {
   text-align: center;
 }
@@ -6,6 +10,10 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+img {
+height: 40px;
+width: 40px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
