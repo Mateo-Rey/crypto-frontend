@@ -21,6 +21,25 @@ width: 40px;
     animation: App-logo-spin infinite 20s linear;
   }
 }
+.effect-smaller-inner {
+  background: #E0E4E7;
+    box-shadow: inset 2px 1px 1px 0px #73717a, inset -1px -2px 2px 0px #fff;
+}
+.effect {
+    background: #E0E4E7;
+    box-shadow: 5px 5px 13px #b8c7dd,
+        -5px -5px 13px #ffffff;
+}
+
+.effect-inner {
+    background: #E0E4E7;
+    box-shadow: inset 4px 3px 3px 0px #73717a, inset -2px -4px 4px 0px #fff;
+}
+
+.effect-bigger-inner {
+  background: #E0E4E7;
+  box-shadow: inset 6px 5px 5px 0px #fff, inset -3px -6px 6px 0px #73717a;
+}
 
 .App-header {
   background-color: #282c34;

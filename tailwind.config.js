@@ -29,8 +29,9 @@ module.exports = {
         "page-bgcolor": "#faffff",
         "page-accent": "#d3e0e2",
         "page-shadow": "#c7d4d5",
-        "input-outline": "#CBD081",
-        "input-primary": "#ABEBD2"
+        "input-outline": "#ABEBD2",
+        "input-primary": "#548687",
+        "grey-color": "#848FA5"
       },
     },
   },
