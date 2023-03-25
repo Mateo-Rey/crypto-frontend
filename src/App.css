@@ -22,23 +22,23 @@ width: 40px;
   }
 }
 .effect-smaller-inner {
-  background: #E0E4E7;
-    box-shadow: inset 2px 1px 1px 0px #73717a, inset -1px -2px 2px 0px #fff;
+  background: #362647;
+    box-shadow: inset 2px 1px 1px 0px #3E1F47, inset -1px -2px 2px 0px #000;
 }
 .effect {
-    background: #E0E4E7;
-    box-shadow: 5px 5px 13px #b8c7dd,
-        -5px -5px 13px #ffffff;
+    background: #362647;
+    box-shadow: 5px 5px 13px #3E1F47,
+        -5px -5px 13px #000;
 }
 
 .effect-inner {
-    background: #E0E4E7;
-    box-shadow: inset 4px 3px 3px 0px #73717a, inset -2px -4px 4px 0px #fff;
+    background: #362647;
+    box-shadow: inset 4px 3px 3px 0px #3E1F47, inset -2px -4px 4px 0px #000;
 }
 
 .effect-bigger-inner {
-  background: #E0E4E7;
-  box-shadow: inset 6px 5px 5px 0px #fff, inset -3px -6px 6px 0px #73717a;
+  background: #362647;
+  box-shadow: inset 6px 5px 5px 0px #000, inset -3px -6px 6px 0px #3E1F47;
 }
 
 .App-header {
