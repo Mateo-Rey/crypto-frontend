@@ -12,8 +12,8 @@
   pointer-events: none;
 }
 img {
-height: 40px;
-width: 40px;
+  height: 40px;
+  width: 40px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -21,24 +21,39 @@ width: 40px;
     animation: App-logo-spin infinite 20s linear;
   }
 }
+.effect-smaller-lighter-inner {
+  background: #5b4078;
+  box-shadow: inset 2px 1px 1px 0px #3e1f47, inset -1px -2px 2px 0px #000;
+}
 .effect-smaller-inner {
   background: #362647;
-    box-shadow: inset 2px 1px 1px 0px #3E1F47, inset -1px -2px 2px 0px #000;
+  box-shadow: inset 2px 1px 1px 0px #3e1f47, inset -1px -2px 2px 0px #000;
 }
 .effect {
-    background: #362647;
-    box-shadow: 5px 5px 13px #3E1F47,
-        -5px -5px 13px #000;
+  background: #362647;
+  box-shadow: 5px 5px 13px #3e1f47, -5px -5px 13px #000;
+}
+.effect-bigger {
+  background: #362647;
+  box-shadow: 10px 10px 20px #3e1f47, -10px -10px 20px #000;
+}
+.effect-lighter {
+  background: #5b4078;
+  box-shadow: 5px 5px 13px #3e1f47, -5px -5px 13px #000;
 }
 
 .effect-inner {
-    background: #362647;
-    box-shadow: inset 4px 3px 3px 0px #3E1F47, inset -2px -4px 4px 0px #000;
+  background: #362647;
+  box-shadow: inset 4px 3px 3px 0px #3e1f47, inset -2px -4px 4px 0px #000;
+}
+.effect-lighter-inner {
+  background: #5b4078;
+  box-shadow: inset 4px 3px 3px 0px #3e1f47, inset -2px -4px 4px 0px #000;
 }
 
 .effect-bigger-inner {
   background: #362647;
-  box-shadow: inset 6px 5px 5px 0px #000, inset -3px -6px 6px 0px #3E1F47;
+  box-shadow: inset 6px 5px 5px 0px #000, inset -3px -6px 6px 0px #3e1f47;
 }
 
 .App-header {

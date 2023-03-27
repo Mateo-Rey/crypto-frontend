@@ -29,13 +29,18 @@ export function CodeParagraph({ text }) {
     if (index === 1) {
       // If the part is a code snippet, render a pre/code tag with a copy button
       const code = part;
-      const python = part.includes('python')
+      const python = part.includes('python');
       const javascript = part.includes('javascript');
+      const cplus = part.includes('c++');
+      const solidity = part.includes('solidity');
+      const rust = part.includes('rust');
+      const html = part.includes('html');
+      const ruby = part.includes('ruby');
       console.log(code);
       return (
         <div className="my-3">
           <div key={index} className="code-block">
-          <SyntaxHighlighter language={javascript} style={a11yDark}>
+          <SyntaxHighlighter language={python || javascript || cplus || solidity || rust || html || ruby } style={a11yDark}>
             {code}
           </SyntaxHighlighter>
           </div>
