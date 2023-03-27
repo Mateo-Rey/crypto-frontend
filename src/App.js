@@ -88,6 +88,7 @@ function App() {
             >
               Show Chat
             </button>
+            
             <div className="transition place-self-center ease-in-out h-full drop-shadow-2xl">
               <SwapWidget
                 brandedFooter={false}
@@ -100,6 +101,7 @@ function App() {
                 }}
               />
             </div>
+            
           </>
         ) : (
           <>
@@ -114,8 +116,11 @@ function App() {
                 >
                   Show Widget
                 </button>
+                
+                <button className="text-white" onClick={() => {setMessageList([])}}>Clear Chat</button>
+                <input type={Number} value={tokens} />
               </div>
-              <div className="md:h-[90%] absolute left-[25%] flex flex-col place-content-baseline p-5 overflow-scroll">
+              <div className="md:h-[90%] absolute left-[25%] w-[75%] flex flex-col p-5 overflow-scroll">
                
                 {messageList.map((message, i) => (
                   <ChatMessage message={message} key={i} />
