@@ -6,15 +6,15 @@ export const ChatMessage = ({ message }) => {
   if (message.role !== "system") {
     return (
       <>
-        <div className="outline text-white p-2 my-2 outline-4 md:w-[75%] outline-input-outline self-center bg-input-primary bg-opacity-80 ease-in-out shadow-lg rounded-lg">
+        <div className="outline effect-bigger w-[100%] text-white p-2 my-2 outline-4 md:w-[75%] outline-input-outline self-center bg-input-primary bg-opacity-80 ease-in-out shadow-lg rounded-lg">
           <div className="flex flex-col items-center">
-            <div className="flex items-center font-nunito space-x-3">
+            <div className="flex items-center align-center place-content-center text-center font-nunito space-x-3">
               {message.role === "assistant" && (
                 <img className="rounded" src={cryptoavatar} />
               )}
               <div className="font-nunito">{message.role}</div>
             </div>
-            <div className="w-[75%] break-normal">
+            <div className="w-[100%] text-center break-normal">
               <CodeParagraph text={message.content}/>
         </div>
           </div>

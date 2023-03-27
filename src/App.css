@@ -21,6 +21,7 @@ img {
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
 .effect-smaller-lighter-inner {
   background: #5b4078;
   box-shadow: inset 2px 1px 1px 0px #3e1f47, inset -1px -2px 2px 0px #000;

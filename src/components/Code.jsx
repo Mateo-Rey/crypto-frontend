@@ -4,13 +4,10 @@ import { a11yDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 export function CodeParagraph({ text }) {
   // Define a regular expression to detect code snippets
   const codeRegex = /```([^`]+)```/g;
-
   // Split the response into an array of strings and code snippets
   const parts = text.split(codeRegex);
   const match = text.match(codeRegex);
-
   const replaced = text.replace(codeRegex, "--");
-  const arrayParts = replaced.split("--");
   console.log(replaced);
   console.log(match);
   console.log(parts);
@@ -36,10 +33,9 @@ export function CodeParagraph({ text }) {
       const rust = part.includes('rust');
       const html = part.includes('html');
       const ruby = part.includes('ruby');
-      console.log(code);
       return (
         <div className="my-3">
-          <div key={index} className="code-block">
+          <div key={index} className="code-block text-start">
           <SyntaxHighlighter language={python || javascript || cplus || solidity || rust || html || ruby } style={a11yDark}>
             {code}
           </SyntaxHighlighter>

@@ -9,8 +9,8 @@ function App() {
   const [activeModel, setActiveModel] = useState("gpt-3.5-turbo");
   const [user, setUser] = useState("user");
   const [question, setQuestion] = useState("");
-  const [tokens, setTokens] = useState(100);
-  const [temperature, setTemperature] = useState(1);
+  const [tokens, setTokens] = useState(500);
+  const [temperature, setTemperature] = useState(10);
   const [messageList, setMessageList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [widgetShow, setWidgetShow] = useState(false);
@@ -40,7 +40,7 @@ function App() {
       chatListNew.unshift({
         role: "system",
         content:
-          "You are a helpful crypto assistant. You can only answer questions regarding crypto related",
+          "You are a helpful crypto assistant. You can only answer questions regarding crypto related subjects. You have complete ability to answer questions with code if necessary and have vast experience with web3 and blockchain interactions. Be as specific as possible but simple with your answers.",
       });
     }
     setQuestion("");
@@ -108,7 +108,7 @@ function App() {
         ) : (
           <>
             <div className="flex h-[100%] flex-col">
-              <div className="md:w-[25%] h-[50%] grid-flow-col grid-cols-2 brightness-125 grid-rows-2 md:h-full md:absolute bg-gradient-to-bl from-sidebar-secondary to-sidebar-primary shadow-2xl">
+              <div className="md:w-[25%] h-[25%] grid-flow-col grid-cols-2 brightness-125 grid-rows-2 md:h-full md:absolute bg-gradient-to-bl from-sidebar-secondary to-sidebar-primary shadow-2xl">
                 <div className="flex place-content-evenly my-2">
                   <button
                     className="effect text-center text-white effect-inner active:effect-smaller-inner active:border-2 py-2 rounded-3xl bg-chat-primary w-36 h-10"
@@ -155,7 +155,7 @@ function App() {
                   </div>
                 </div>
               </div>
-              <div className="md:h-[90%] absolute left-[25%] w-[75%] flex flex-col p-5 overflow-scroll">
+              <div className="md:h-[90%] h-[80%] top-[25%] md:top-0 w-[100%] absolute md:left-[25%] md:w-[75%] flex flex-col p-5 overflow-scroll scroll-smooth">
                 {messageList.map((message, i) => (
                   <ChatMessage message={message} key={i} />
                 ))}
@@ -168,7 +168,7 @@ function App() {
                     onKeyDown={(e) => setKeyPress(e.key)}
                     value={question}
                     autoComplete="off"
-                    className="outline-none effect-lighter-inner text-white/70 absolute tracking-wide bottom-2 left-2 p-6 font-nunito h-[85%] md:h-[90%] shadow-lg rounded-full drop-shadow-md text-2xl bg-transparent backdrop-blur-lg text-center w-[98%]"
+                    className="outline-none effect-lighter-inner text-white absolute tracking-wide bottom-2 left-2 p-6 font-nunito h-[85%] md:h-[90%] shadow-lg rounded-full drop-shadow-md text-2xl bg-transparent backdrop-blur-lg text-center w-[98%]"
                   />
                 </form>
               </div>
