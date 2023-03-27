@@ -36,6 +36,9 @@ function App() {
       ...messageList,
       { role: "user", content: `${question}` },
     ];
+    if (chatListNew[0].role !== "system") {
+      chatListNew.unshift({"role": "system", "content": "You are a helpful crypto assistant. You can only answer questions regarding crypto related"})
+    }
     setQuestion("");
     setLoading(true);
     setMessageList(chatListNew);
