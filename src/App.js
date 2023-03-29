@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { SwapWidget } from "@uniswap/widgets";
 import "@uniswap/widgets/fonts.css";
 import { ChatMessage } from "./components/ChatMessage";
+import { Loader } from "./components/Loader";
 function App() {
   const [models, setModels] = useState([]);
   const [keyPress, setKeyPress] = useState();
@@ -29,7 +30,7 @@ function App() {
     fontFamily: "Nunito",
     borderRadius: 0,
   };
-  console.log(question);
+  console.log(loading);
   const handleSubmit = async (e) => {
     e.preventDefault();
     let chatListNew = [
@@ -83,16 +84,16 @@ function App() {
       <div className="h-[100%] w-[100%] overflow-hidden z-10 flex flex-col absolute bg-gradient-to-br from-chat-primary to-chat-secondary">
         {!widgetShow ? (
           <>
+          
             <button
-              className="effect text-center text-white effect-inner active:effect-smaller-inner active:border-2 py-2 rounded-3xl bg-chat-primary w-36 h-10"
+              className="effect-purple-inner my-6 mx-12 text-center text-xl text-white transition-all active:scale-[90%] active:border-2 p-1 rounded-full bg-chat-primary w-36 h-16"
               onClick={() => {
                 setWidgetShow(!widgetShow);
               }}
             >
               Show Chat
             </button>
-
-            <div className="transition place-self-center ease-in-out h-full drop-shadow-2xl">
+            <div className="transition-all flex absolute top-[15%] md:hidden place-self-center ease-in-out h-[65%] w-full drop-shadow-2xl">
               <SwapWidget
                 brandedFooter={false}
                 jsonRpcUrlMap={JSONRPCMAP}
@@ -104,45 +105,60 @@ function App() {
                 }}
               />
             </div>
+            <div className="transition-all hidden md:flex absolute left-[35%] top-[15%] ease-in-out w-full drop-shadow-2xl">
+              <SwapWidget
+                brandedFooter={false}
+                jsonRpcUrlMap={JSONRPCMAP}
+                theme={theme}
+                convenienceFee={50}
+                width={420}
+                convenienceFeeRecipient={{
+                  [1]: "0xb8bC25BAAE9785d864E943B47CEa8855b40f911e",
+                }}
+              />
+            </div>
           </>
         ) : (
           <>
-            <div className="flex h-[100%] flex-col">
-              <div className="md:w-[25%] h-[25%] grid-flow-col grid-cols-2 brightness-125 grid-rows-2 md:h-full md:absolute bg-gradient-to-bl from-sidebar-secondary to-sidebar-primary shadow-2xl">
-                <div className="flex place-content-evenly my-2">
-                  <button
-                    className="effect text-center text-white effect-inner active:effect-smaller-inner active:border-2 py-2 rounded-3xl bg-chat-primary w-36 h-10"
-                    onClick={() => {
-                      setWidgetShow(!widgetShow);
-                      console.log(widgetShow);
-                    }}
-                  >
-                    Show Widget
-                  </button>
+            <div className="flex h-[100%]">
+              <div className="md:w-[50%] h-[30%] w-full md:left-[25%] grid grid-rows-2 grid-cols-2 grid-flow-row md:h-[15%] md:flex md:place-content-evenly place-items-center brightness-125 effect-blue-inner absolute bg-gradient-to-bl from-sidebar-secondary to-sidebar-primary shadow-2xl">
+                <button
+                  className="effect text-center text-xl text-white effect-inner transition-all active:scale-[90%] active:border-2 p-1 rounded-full bg-chat-primary w-36 h-16"
+                  onClick={() => {
+                    setWidgetShow(!widgetShow);
+                    console.log(widgetShow);
+                  }}
+                >
+                  Show Widget
+                </button>
 
-                  <button
-                    className=" effect text-center text-white effect-inner active:effect-smaller-inner active:border-2 py-2 rounded-3xl bg-chat-primary w-36 h-10"
-                    onClick={() => {
-                      setMessageList([]);
-                      setQuestion("");
-                    }}
-                  >
-                    Clear Chat
-                  </button>
+                <button
+                  className="effect text-center text-xl text-white transition-all effect-inner active:scale-[90%] active:border-2 p-1 rounded-full bg-chat-primary w-36 h-16"
+                  onClick={() => {
+                    setMessageList([]);
+                    setQuestion("");
+                  }}
+                >
+                  Clear Chat
+                </button>
+
+                <div className="flex flex-col text-white relative bottom-2 items-center">
+                  <label className="effect-grey w-20 tracking-wide text-center h-6">
+                    Tokens
+                  </label>
+                  <input
+                    className="outline-none effect-inner hover:border-2 relative w-32 h-10 text-center tracking-wide p-6 font-nunito shadow-lg rounded-full drop-shadow-md text-2xl text-white bg-transparent backdrop-blur-lg"
+                    onChange={(e) => setTokens(e.target.value)}
+                    type={Number}
+                    value={tokens}
+                  />
                 </div>
-                <div className="grid grid-cols-2 text-white place-content-evenly m-2">
-                  <div className="flex flex-col items-center">
-                    <label>Tokens</label>
-                    <input
-                      className="outline-none effect-inner hover:border-2 relative w-32 h-10 text-center tracking-wide p-6 font-nunito shadow-lg rounded-full drop-shadow-md text-2xl text-white bg-transparent backdrop-blur-lg"
-                      onChange={(e) => setTokens(e.target.value)}
-                      type={Number}
-                      value={tokens}
-                    />
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <label>Temperature</label>
-                    <div className="effect effect-inner rounded-full p-2 hover:border-2 w-full h-12 bg-chat-primary flex items-center place-content-center">
+
+                <div className="flex flex-col relative bottom-2 text-white items-center">
+                  <label className="effect-grey w-32 tracking-wide text-center h-6">
+                    Temperature
+                  </label>
+                  <div className="effect effect-inner rounded-full p-2 hover:border-2 w-full h-12 bg-chat-primary flex items-center place-content-center">
                     <input
                       className="w-full cursor-pointer"
                       type="range"
@@ -151,16 +167,17 @@ function App() {
                       onChange={(e) => setTemperature(e.target.value)}
                       value={temperature}
                     />
-                    </div>
                   </div>
                 </div>
               </div>
-              <div className="md:h-[90%] h-[80%] top-[25%] md:top-0 w-[100%] absolute md:left-[25%] md:w-[75%] flex flex-col p-5 overflow-scroll scroll-smooth">
+              <div className="md:h-[75%] h-[60%] items-center top-[30%] md:top-[15%] w-full absolute flex flex-col p-5 overflow-scroll scroll-smooth">
                 {messageList.map((message, i) => (
                   <ChatMessage message={message} key={i} />
                 ))}
+                {loading && <Loader />}
               </div>
-              <div className="absolute h-[10%] md:left-[25%] bottom-0 w-full md:w-[75%]">
+
+              <div className="absolute h-[10%] md:left-[8%] bottom-0 w-full md:w-[85%]">
                 <form onSubmit={(e) => handleSubmit(e)}>
                   <input
                     name="input"
@@ -168,7 +185,7 @@ function App() {
                     onKeyDown={(e) => setKeyPress(e.key)}
                     value={question}
                     autoComplete="off"
-                    className="outline-none effect-lighter-inner text-white absolute tracking-wide bottom-2 left-2 p-6 font-nunito h-[85%] md:h-[90%] shadow-lg rounded-full drop-shadow-md text-2xl bg-transparent backdrop-blur-lg text-center w-[98%]"
+                    className="outline-none effect-lighter-inner text-white absolute tracking-wide bottom-2 p-6 font-nunito h-[85%] md:h-[90%] shadow-lg rounded-full drop-shadow-md text-2xl bg-transparent backdrop-blur-lg text-center w-full"
                   />
                 </form>
               </div>
