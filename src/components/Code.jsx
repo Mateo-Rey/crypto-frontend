@@ -40,7 +40,7 @@ export function CodeParagraph({ text }) {
             {code}
           </SyntaxHighlighter>
           </div>
-          <button className="effect-blue-inner-smaller text-center text-xl text-white transition-all active:scale-[90%] active:border-2 p-1 rounded-full bg-chat-primary w-24 h-12" onClick={() => handleCopyClick(code)}>
+          <button className="effect-blue-inner-smaller my-2 text-center text-xl text-white transition-all  active:scale-[90%] active:border-2 p-1 rounded-full bg-chat-primary w-24 h-12" onClick={() => handleCopyClick(code)}>
             {copiedCode === code ? "Copied!" : "Copy"}
           </button>
         </div>

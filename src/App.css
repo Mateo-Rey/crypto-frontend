@@ -36,17 +36,23 @@ img {
 }
 .effect-purple {
   background: #745296;
-  box-shadow: 8px 8px 16px #5a4075,
-             -8px -8px 16px #8e64b7;
+  box-shadow: 8px 8px 16px #5a4075, -8px -8px 16px #8e64b7;
+}
+.effect-purple-smaller {
+  background: #745296;
+  box-shadow: 4px 4px 8px #5a4075, -4px -4px 8px #8e64b7;
 }
 .effect-purple-inner {
   background: #745296;
-  box-shadow: 8px 8px 16px #5a4075,
-            inset -8px -8px 16px #8e64b7;
+  box-shadow: 8px 8px 16px #5a4075, inset -8px -8px 16px #8e64b7;
 }
 .effect-blue-inner {
   background: linear-gradient(190deg, #251d66, #3b2da0);
   box-shadow: 4px 4px 30px #091c57, inset -4px -4px 20px #0c2675;
+}
+.effect-black {
+  background: #282929;
+  box-shadow: 10px 10px 11px #101010, -10px -10px 11px #404242;
 }
 .effect-blue-inner-smaller {
   background: #0a2166;
@@ -54,7 +60,7 @@ img {
 }
 .effect-grey {
   background: #313644;
-  box-shadow: 8px 8px 20px #2a2e3a,  -2px -2px 20px #383e4e;
+  box-shadow: 8px 8px 20px #2a2e3a, -2px -2px 20px #383e4e;
 }
 .effect-bigger {
   background: #362647;

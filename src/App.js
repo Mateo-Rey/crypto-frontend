@@ -4,17 +4,36 @@ import { SwapWidget } from "@uniswap/widgets";
 import "@uniswap/widgets/fonts.css";
 import { ChatMessage } from "./components/ChatMessage";
 import { Loader } from "./components/Loader";
+import { LoginModal } from "./components/LoginModal";
+import { auth } from "./context/AuthContext";
+import { RegisterModal } from "./components/RegisterModal";
 function App() {
   const [models, setModels] = useState([]);
   const [keyPress, setKeyPress] = useState();
   const [activeModel, setActiveModel] = useState("gpt-3.5-turbo");
   const [user, setUser] = useState("user");
+  const [signedIn, setSignedIn] = useState(false);
+  const [loginShow, setLoginShow] = useState(false);
   const [question, setQuestion] = useState("");
   const [tokens, setTokens] = useState(500);
   const [temperature, setTemperature] = useState(10);
   const [messageList, setMessageList] = useState([]);
+  const [JWT, setJWT] = useState();
   const [loading, setLoading] = useState(false);
   const [widgetShow, setWidgetShow] = useState(false);
+  const [switchShow, setSwitchShow] = useState(true);
+  useEffect(() => {
+    auth.currentUser.getIdToken(false)
+      .then(token => {
+        // make a secure call to our API to get the secret info
+        fetch('http://localhost:3012/authentication', {
+          headers: { Authorization: token },
+        }) // SEND TOKEN
+          .then(res => res.json())
+          .then(data => setJWT(data.message))
+      })
+      .catch(alert)
+  }, [])
   const JSONRPCMAP = {
     1: ["https://mainnet.infura.io/v3/20034e7b0b2d4dbda836cb13cb819bb4"],
   };
@@ -84,24 +103,42 @@ function App() {
       <div className="h-[100%] w-[100%] overflow-hidden z-10 flex flex-col absolute bg-gradient-to-br from-chat-primary to-chat-secondary">
         {!widgetShow ? (
           <>
-          
-            <button
-              className="effect-purple-inner my-6 mx-12 text-center text-xl text-white transition-all active:scale-[90%] active:border-2 p-1 rounded-full bg-chat-primary w-36 h-16"
-              onClick={() => {
-                setWidgetShow(!widgetShow);
-              }}
-            >
-              Show Chat
-            </button>
-            <div className="transition-all flex absolute top-[15%] md:hidden place-self-center ease-in-out h-[65%] w-full drop-shadow-2xl">
+            <div className="flex place-content-evenly w-[30%] my-6 place-self-center">
+              {signedIn && JWT && (
+                <button
+                  className="effect-purple-inner place-self-center text-center text-xl text-white transition-all active:scale-[90%] active:border-2 p-1 rounded-full bg-chat-primary w-36 h-16"
+                  onClick={() => {
+                    setWidgetShow(!widgetShow);
+                  }}
+                >
+                  Show Chat
+                </button>
+              )}
+              {signedIn ? (
+                <button
+                  className="effect-purple-inner place-self-center text-center text-xl text-white transition-all active:scale-[90%] active:border-2 p-1 rounded-full bg-chat-primary w-36 h-16"
+                  onClick={() => setLoginShow(!loginShow)}
+                >
+                  Sign Out
+                </button>
+              ) : (
+                <button
+                  className="effect-purple-inner place-self-center text-center text-xl text-white transition-all active:scale-[90%] active:border-2 p-1 rounded-full bg-chat-primary w-36 h-16"
+                  onClick={() => setLoginShow(!loginShow)}
+                >
+                  Sign In
+                </button>
+              )}
+            </div>
+            {/* <div className="transition-all flex absolute top-[15%] md:hidden place-self-center ease-in-out h-[65%] w-full drop-shadow-2xl">
               <SwapWidget
                 brandedFooter={false}
                 jsonRpcUrlMap={JSONRPCMAP}
                 theme={theme}
-                convenienceFee={50}
+                convenienceFee={75}
                 width={360}
                 convenienceFeeRecipient={{
-                  [1]: "0xb8bC25BAAE9785d864E943B47CEa8855b40f911e",
+                  [1]: "0x5Bc8Ab2e4fa4dbCe2A679A48a36DD007735fa380",
                 }}
               />
             </div>
@@ -116,12 +153,13 @@ function App() {
                   [1]: "0xb8bC25BAAE9785d864E943B47CEa8855b40f911e",
                 }}
               />
-            </div>
+            </div> */}
+            {loginShow && (switchShow ? <LoginModal show={loginShow} setShow={setLoginShow} switchShow={switchShow} setSwitchShow={setSwitchShow}/> : <RegisterModal show={loginShow} setShow={setLoginShow} switchShow={switchShow} setSwitchShow={setSwitchShow} />)} 
           </>
         ) : (
           <>
             <div className="flex h-[100%]">
-              <div className="md:w-[50%] h-[30%] w-full md:left-[25%] grid grid-rows-2 grid-cols-2 grid-flow-row md:h-[15%] md:flex md:place-content-evenly place-items-center brightness-125 effect-blue-inner absolute bg-gradient-to-bl from-sidebar-secondary to-sidebar-primary shadow-2xl">
+              <div className="md:w-[50%] rounded-2xl h-[30%] w-full md:left-[25%] grid grid-rows-2 grid-cols-2 grid-flow-row md:h-[15%] md:flex md:place-content-evenly place-items-center brightness-125 effect-blue-inner absolute bg-gradient-to-bl from-sidebar-secondary to-sidebar-primary shadow-2xl">
                 <button
                   className="effect text-center text-xl text-white effect-inner transition-all active:scale-[90%] active:border-2 p-1 rounded-full bg-chat-primary w-36 h-16"
                   onClick={() => {
