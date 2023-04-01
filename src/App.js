@@ -5,35 +5,65 @@ import "@uniswap/widgets/fonts.css";
 import { ChatMessage } from "./components/ChatMessage";
 import { Loader } from "./components/Loader";
 import { LoginModal } from "./components/LoginModal";
-import { auth } from "./context/AuthContext";
 import { RegisterModal } from "./components/RegisterModal";
 function App() {
   const [models, setModels] = useState([]);
   const [keyPress, setKeyPress] = useState();
   const [activeModel, setActiveModel] = useState("gpt-3.5-turbo");
-  const [user, setUser] = useState("user");
-  const [signedIn, setSignedIn] = useState(false);
+  const [user, setUser] = useState();
   const [loginShow, setLoginShow] = useState(false);
   const [question, setQuestion] = useState("");
   const [tokens, setTokens] = useState(500);
   const [temperature, setTemperature] = useState(10);
   const [messageList, setMessageList] = useState([]);
-  const [JWT, setJWT] = useState();
   const [loading, setLoading] = useState(false);
   const [widgetShow, setWidgetShow] = useState(false);
+  const [jwtTokens, setJwtTokens] = useState();
   const [switchShow, setSwitchShow] = useState(true);
+  const [tokenVerified, setTokenVerified] = useState(false);
+  const [expired, setExpired] = useState(false);
   useEffect(() => {
-    auth.currentUser.getIdToken(false)
-      .then(token => {
-        // make a secure call to our API to get the secret info
-        fetch('http://localhost:3012/authentication', {
-          headers: { Authorization: token },
-        }) // SEND TOKEN
-          .then(res => res.json())
-          .then(data => setJWT(data.message))
-      })
-      .catch(alert)
-  }, [])
+    fetch("http://localhost:3012/getNewToken", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "true",
+      },
+      body: JSON.stringify({
+        refreshToken: jwtTokens?.refreshToken,
+        user: user?.user,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        const refreshToken = jwtTokens?.refreshToken;
+        const accessToken = data.accessToken;
+        setJwtTokens({ refreshToken: refreshToken, accessToken: accessToken });
+      });
+  }, [expired]);
+  useEffect(() => {
+    if (tokenVerified === false && user) {
+      setExpired(true);
+    } else {
+      setExpired(false);
+    }
+  }, [tokenVerified]);
+  useEffect(() => {
+    fetch("http://localhost:3012/authenticateToken", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "true",
+      },
+      body: JSON.stringify({ token: jwtTokens?.accessToken, user: user?.user }),
+    })
+      .then((response) => response.json())
+      .then((data) => setTokenVerified(data.verified))
+      .catch((error) => {
+        setTokenVerified(false);
+      });
+  });
   const JSONRPCMAP = {
     1: ["https://mainnet.infura.io/v3/20034e7b0b2d4dbda836cb13cb819bb4"],
   };
@@ -49,7 +79,10 @@ function App() {
     fontFamily: "Nunito",
     borderRadius: 0,
   };
-  console.log(loading);
+  console.log(tokenVerified);
+  console.log(expired);
+  console.log(jwtTokens);
+  console.log(user);
   const handleSubmit = async (e) => {
     e.preventDefault();
     let chatListNew = [
@@ -63,6 +96,7 @@ function App() {
           "You are a helpful crypto assistant. You can only answer questions regarding crypto related subjects. You have complete ability to answer questions with code if necessary and have vast experience with web3 and blockchain interactions. Be as specific as possible but simple with your answers.",
       });
     }
+
     setQuestion("");
     setLoading(true);
     setMessageList(chatListNew);
@@ -100,11 +134,12 @@ function App() {
   }, []);
   return (
     <>
+    
       <div className="h-[100%] w-[100%] overflow-hidden z-10 flex flex-col absolute bg-gradient-to-br from-chat-primary to-chat-secondary">
         {!widgetShow ? (
           <>
-            <div className="flex place-content-evenly w-[30%] my-6 place-self-center">
-              {signedIn && JWT && (
+            <div className="flex place-content-around w-full md:w-[25%] place-self-center">
+              {tokenVerified && (
                 <button
                   className="effect-purple-inner place-self-center text-center text-xl text-white transition-all active:scale-[90%] active:border-2 p-1 rounded-full bg-chat-primary w-36 h-16"
                   onClick={() => {
@@ -114,23 +149,14 @@ function App() {
                   Show Chat
                 </button>
               )}
-              {signedIn ? (
-                <button
-                  className="effect-purple-inner place-self-center text-center text-xl text-white transition-all active:scale-[90%] active:border-2 p-1 rounded-full bg-chat-primary w-36 h-16"
-                  onClick={() => setLoginShow(!loginShow)}
-                >
-                  Sign Out
-                </button>
-              ) : (
-                <button
-                  className="effect-purple-inner place-self-center text-center text-xl text-white transition-all active:scale-[90%] active:border-2 p-1 rounded-full bg-chat-primary w-36 h-16"
-                  onClick={() => setLoginShow(!loginShow)}
-                >
-                  Sign In
-                </button>
-              )}
+              <button
+                className="effect-purple-inner mx-2 place-self-center text-center text-xl text-white transition-all active:scale-[90%] active:border-2 p-1 rounded-full bg-chat-primary w-36 h-16"
+                onClick={() => setLoginShow(!loginShow)}
+              >
+                Sign In
+              </button>
             </div>
-            {/* <div className="transition-all flex absolute top-[15%] md:hidden place-self-center ease-in-out h-[65%] w-full drop-shadow-2xl">
+            <div className="transition-all flex absolute top-[15%] md:hidden place-self-center ease-in-out h-[65%] w-full drop-shadow-2xl">
               <SwapWidget
                 brandedFooter={false}
                 jsonRpcUrlMap={JSONRPCMAP}
@@ -142,22 +168,44 @@ function App() {
                 }}
               />
             </div>
-            <div className="transition-all hidden md:flex absolute left-[35%] top-[15%] ease-in-out w-full drop-shadow-2xl">
+            <div className="transition-all my-4 hidden md:flex absolute h-auto left-[35%] top-[10%] ease-in-out w-full drop-shadow-2xl">
               <SwapWidget
                 brandedFooter={false}
                 jsonRpcUrlMap={JSONRPCMAP}
                 theme={theme}
-                convenienceFee={50}
+                convenienceFee={75}
                 width={420}
                 convenienceFeeRecipient={{
-                  [1]: "0xb8bC25BAAE9785d864E943B47CEa8855b40f911e",
+                  [1]: "0x5Bc8Ab2e4fa4dbCe2A679A48a36DD007735fa380",
                 }}
               />
-            </div> */}
-            {loginShow && (switchShow ? <LoginModal show={loginShow} setShow={setLoginShow} switchShow={switchShow} setSwitchShow={setSwitchShow}/> : <RegisterModal show={loginShow} setShow={setLoginShow} switchShow={switchShow} setSwitchShow={setSwitchShow} />)} 
+            </div>
+            {loginShow &&
+              (switchShow ? (
+                <LoginModal
+                  setShow={setLoginShow}
+                  setTokens={setJwtTokens}
+                  show={loginShow}
+                  user={user}
+                  setUser={setUser}
+                  setSwitchShow={setSwitchShow}
+                  switchShow={switchShow}
+                />
+              ) : (
+                <RegisterModal
+                  user={user}
+                  setUser={setUser}
+                  setSwitchShow={setSwitchShow}
+                  switchShow={switchShow}
+                  setTokens={setJwtTokens}
+                  setShow={setLoginShow}
+                  show={loginShow}
+                />
+              ))}
           </>
         ) : (
           <>
+          {tokenVerified &&
             <div className="flex h-[100%]">
               <div className="md:w-[50%] rounded-2xl h-[30%] w-full md:left-[25%] grid grid-rows-2 grid-cols-2 grid-flow-row md:h-[15%] md:flex md:place-content-evenly place-items-center brightness-125 effect-blue-inner absolute bg-gradient-to-bl from-sidebar-secondary to-sidebar-primary shadow-2xl">
                 <button
@@ -181,7 +229,7 @@ function App() {
                 </button>
 
                 <div className="flex flex-col text-white relative bottom-2 items-center">
-                  <label className="effect-grey w-20 tracking-wide text-center h-6">
+                  <label className="effect-grey relative -top-2 md:-top-1 rounded-3xl w-20 tracking-wide text-center h-6">
                     Tokens
                   </label>
                   <input
@@ -193,7 +241,7 @@ function App() {
                 </div>
 
                 <div className="flex flex-col relative bottom-2 text-white items-center">
-                  <label className="effect-grey w-32 tracking-wide text-center h-6">
+                  <label className="effect-grey rounded-3xl relative -top-2 md:-top-1 w-32 tracking-wide text-center h-6">
                     Temperature
                   </label>
                   <div className="effect effect-inner rounded-full p-2 hover:border-2 w-full h-12 bg-chat-primary flex items-center place-content-center">
@@ -218,7 +266,7 @@ function App() {
               <div className="absolute h-[10%] md:left-[8%] bottom-0 w-full md:w-[85%]">
                 <form onSubmit={(e) => handleSubmit(e)}>
                   <input
-                    name="input"
+                    name="question"
                     onChange={(e) => setQuestion(e.target.value)}
                     onKeyDown={(e) => setKeyPress(e.key)}
                     value={question}
@@ -228,6 +276,7 @@ function App() {
                 </form>
               </div>
             </div>
+}
           </>
         )}
       </div>
